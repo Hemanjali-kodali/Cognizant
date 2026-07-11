@@ -1,0 +1,142 @@
+-- Create Database
+CREATE DATABASE OnlineRetailStore;
+USE OnlineRetailStore;
+
+-- Create Products Table
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(100),
+    Category VARCHAR(50),
+    Price DECIMAL(10,2)
+);
+
+-- Insert Sample Data
+INSERT INTO Products (ProductID, ProductName, Category, Price) VALUES
+(1,'iPhone 15','Electronics',80000),
+(2,'Samsung S24','Electronics',75000),
+(3,'MacBook Air','Electronics',120000),
+(4,'Dell Laptop','Electronics',70000),
+(5,'Sony Headphones','Electronics',15000),
+(6,'LG TV','Electronics',120000),
+
+(7,'Sofa','Furniture',50000),
+(8,'Dining Table','Furniture',45000),
+(9,'Office Chair','Furniture',15000),
+(10,'Wardrobe','Furniture',50000),
+(11,'Bed','Furniture',60000),
+
+(12,'Shirt','Clothing',1200),
+(13,'Jeans','Clothing',2000),
+(14,'Jacket','Clothing',3500),
+(15,'T-Shirt','Clothing',1200),
+(16,'Sweater','Clothing',3500);
+
+---------------------------------------------------
+-- ROW_NUMBER()
+---------------------------------------------------
+
+SELECT
+    ProductID,
+    ProductName,
+    Category,
+    Price,
+    ROW_NUMBER() OVER (
+        PARTITION BY Category
+        ORDER BY Price DESC
+    ) AS rn
+FROM Products;
+
+---------------------------------------------------
+-- RANK()
+---------------------------------------------------
+
+SELECT
+    ProductID,
+    ProductName,
+    Category,
+    Price,
+    RANK() OVER (
+        PARTITION BY Category
+        ORDER BY Price DESC
+    ) AS rnk
+FROM Products;
+
+---------------------------------------------------
+-- DENSE_RANK()
+---------------------------------------------------
+
+SELECT
+    ProductID,
+    ProductName,
+    Category,
+    Price,
+    DENSE_RANK() OVER (
+        PARTITION BY Category
+        ORDER BY Price DESC
+    ) AS drnk
+FROM Products;
+
+---------------------------------------------------
+-- Compare All Three
+---------------------------------------------------
+
+SELECT
+    ProductID,
+    ProductName,
+    Category,
+    Price,
+    ROW_NUMBER() OVER (PARTITION BY Category ORDER BY Price DESC) AS rn,
+    RANK() OVER (PARTITION BY Category ORDER BY Price DESC) AS rnk,
+    DENSE_RANK() OVER (PARTITION BY Category ORDER BY Price DESC) AS drnk
+FROM Products;
+
+---------------------------------------------------
+-- Top 3 using ROW_NUMBER()
+---------------------------------------------------
+
+SELECT *
+FROM
+(
+    SELECT
+        ProductID,
+        ProductName,
+        Category,
+        Price,
+        ROW_NUMBER() OVER (PARTITION BY Category ORDER BY Price DESC) AS rn
+    FROM Products
+) t
+WHERE rn <= 3;
+
+---------------------------------------------------
+-- Top 3 using RANK()
+---------------------------------------------------
+
+SELECT *
+FROM
+(
+    SELECT
+        ProductID,
+        ProductName,
+        Category,
+        Price,
+        RANK() OVER (PARTITION BY Category ORDER BY Price DESC) AS rnk
+    FROM Products
+) t
+WHERE rnk <= 3;
+
+---------------------------------------------------
+-- Top 3 using DENSE_RANK()
+---------------------------------------------------
+
+SELECT *
+FROM
+(
+    SELECT
+        ProductID,
+        ProductName,
+        Category,
+        Price,
+        DENSE_RANK() OVER (PARTITION BY Category ORDER BY Price DESC) AS drnk
+    FROM Products
+) t
+WHERE drnk <= 3;
