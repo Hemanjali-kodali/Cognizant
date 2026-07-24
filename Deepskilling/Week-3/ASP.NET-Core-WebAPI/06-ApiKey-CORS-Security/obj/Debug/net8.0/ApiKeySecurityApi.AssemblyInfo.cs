@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiKeySecurityApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d748a6a9467a3dc152309e9f5cdadc031d684330")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1be7ab85412ddd48107e875117cd055e1fdcca60")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiKeySecurityApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiKeySecurityApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
